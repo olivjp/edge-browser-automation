@@ -18,17 +18,17 @@ This skill establishes the deterministic operating standard for interacting with
 
 ## 1. Environment, Connectivity & Zero-Friction Auto-Boot
 
-* **Active Endpoint:** Microsoft Edge running with `--remote-debugging-port=9222` and persistent profile `--user-data-dir="$env:USERPROFILE\.edge-agent"`, connected to MCP `chrome-devtools`.
-* **Session Scope:** Cookies, stored sessions, and logins (Airbnb, LinkedIn, Mercado Livre, etc.) persist permanently inside `.edge-agent` across sessions.
+* **Active Endpoint:** Microsoft Edge running with `--remote-debugging-port=9222` and persistent profile `--user-data-dir="$env:USERPROFILE\.agent-browser"`, connected to MCP `chrome-devtools`.
+* **Session Scope:** Cookies, stored sessions, and logins (Airbnb, LinkedIn, Mercado Livre, etc.) persist permanently inside `.agent-browser` across sessions.
 * **Core Directive:** **NEVER** assume an account is inaccessible, **NEVER** divert to indirect sources (e.g. searching Gmail, local files, or public search engines), and **NEVER** ask the user to manually close or open Edge when port `9222` is not listening!
 
 ### Mandatory Auto-Boot Protocol (When Port 9222 is Closed)
 If `list_pages` fails with `ECONNREFUSED 127.0.0.1:9222`:
 1. **DO NOT** ask the user to restart Edge or run a `.bat` file.
-2. **Immediately and autonomously** boot the persistent `.edge-agent` browser instance detached from the shell job object using WMI (`Win32_Process.Create`):
+2. **Immediately and autonomously** boot the persistent `.agent-browser` browser instance detached from the shell job object using WMI (`Win32_Process.Create`):
    ```powershell
    Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{
-       CommandLine = '"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --remote-debugging-port=9222 --user-data-dir="' + $env:USERPROFILE + '\.edge-agent" --no-first-run --no-default-browser-check'
+       CommandLine = '"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --remote-debugging-port=9222 --user-data-dir="' + $env:USERPROFILE + '\.agent-browser" --no-first-run --no-default-browser-check'
    }
    Start-Sleep -Seconds 2
    ```

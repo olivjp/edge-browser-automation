@@ -29,37 +29,36 @@ Sem essa skill, agentes de IA costumam:
 
 ---
 
-## 🚀 Como Usar
+## 🚀 Como Usar (Zero-Friction Auto-Boot)
 
-### 1. Inicie seu navegador com a porta de depuração (9222)
+A partir da versão atualizada, **você não precisa nem abrir o navegador manualmente antes!**
+Quando a skill é ativada e detecta que a porta `9222` está fechada, o próprio agente inicia automaticamente uma instância dedicada do Microsoft Edge em background com o perfil persistente `~/.agent-browser` (usando `Win32_Process.Create` no Windows para não conflitar com suas janelas abertas e manter a sessão viva).
 
-Para o agente conseguir interagir com o navegador, ele precisa ser iniciado com a porta de depuração aberta:
+Caso queira abrir manualmente na primeira vez para fazer login nos seus sites favoritos:
 
 #### No Windows:
 - **Microsoft Edge:**
-  Execute no terminal:
+  Dê duplo clique no script incluso `start-edge-debug.bat` ou execute no PowerShell:
   ```powershell
-  start msedge --remote-debugging-port=9222
+  start "" "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --remote-debugging-port=9222 --user-data-dir="$env:USERPROFILE\.agent-browser"
   ```
-  *(Ou dê duplo clique no script incluso `start-edge-debug.bat`)*
 
 - **Google Chrome:**
-  Execute no terminal:
+  Dê duplo clique no script incluso `start-chrome-debug.bat` ou execute no PowerShell:
   ```powershell
-  start chrome --remote-debugging-port=9222
+  start "" "chrome.exe" --remote-debugging-port=9222 --user-data-dir="$env:USERPROFILE\.agent-browser-chrome"
   ```
-  *(Ou dê duplo clique no script incluso `start-chrome-debug.bat`)*
 
 #### No macOS / Linux:
 ```bash
 # macOS Edge
-open -a "Microsoft Edge" --args --remote-debugging-port=9222
+open -a "Microsoft Edge" --args --remote-debugging-port=9222 --user-data-dir="$HOME/.agent-browser"
 
 # macOS Chrome
-open -a "Google Chrome" --args --remote-debugging-port=9222
+open -a "Google Chrome" --args --remote-debugging-port=9222 --user-data-dir="$HOME/.agent-browser-chrome"
 
 # Linux Chrome
-google-chrome --remote-debugging-port=9222
+google-chrome --remote-debugging-port=9222 --user-data-dir="$HOME/.agent-browser-chrome"
 ```
 
 ---
